@@ -92,7 +92,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
             </div>
           </header>
           
-          <div className="max-w-3xl">
+          <div className="min-w-0">
             <MarkdownRenderer content={article.content} headings={headings} />
           </div>
           

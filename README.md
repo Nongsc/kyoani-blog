@@ -50,8 +50,8 @@ src/
 ### 1. 克隆仓库
 
 ```bash
-git clone https://github.com/你的用户名/blog-frontend.git
-cd blog-frontend
+git clone https://github.com/Nongsc/kyoani-blog.git
+cd kyoani-blog
 ```
 
 ### 2. 安装依赖
@@ -136,7 +136,7 @@ vercel
 
 ## 相关项目
 
-- **管理后台**: [blog-admin](https://github.com/你的用户名/blog-admin)
+- **管理后台**: [kyoani-admin](https://github.com/Nongsc/kyoani-admin)
 
 ---
 
@@ -145,7 +145,7 @@ vercel
 本项目在 **Tencent CodeBuddy** AI 编程助手的辅助下完成开发与部署，感谢腾讯云提供的高效 AI 编程工具。
 
 <p align="center">
-  <a href="https://cloud.tencent.com/product/codebuddy">
+  <a href="https://www.codebuddy.cn/">
     <img src="https://img.shields.io/badge/Powered%20by-Tencent%20CodeBuddy-blue?style=flat-square" alt="Powered by Tencent CodeBuddy" />
   </a>
 </p>

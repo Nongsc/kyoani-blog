@@ -19,6 +19,9 @@ import {
 import { getSiteSettings } from "@/lib/articles";
 import Image from "next/image";
 
+// Revalidate every 60 seconds for ISR
+export const revalidate = 60;
+
 export const metadata: Metadata = {
   title: "关于 - Kyoani Blog",
   description: "了解博主和这个博客的故事",

@@ -9,6 +9,9 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Calendar, Clock } from "lucide-react";
 
+// Revalidate every 60 seconds for ISR
+export const revalidate = 60;
+
 interface ArticlePageProps {
   params: Promise<{ slug: string }>;
 }

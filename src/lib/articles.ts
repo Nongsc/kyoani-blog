@@ -337,6 +337,13 @@ export async function getSiteSettings(): Promise<SiteSettings> {
         { title: "Next.js", url: "https://nextjs.org" },
         { title: "shadcn/ui", url: "https://ui.shadcn.com" }
       ],
+      about_avatar: "",
+      about_bio: "",
+      about_location: "中国",
+      about_title: "全栈开发者 / 动漫爱好者",
+      about_join_date: "2024",
+      about_skills: [],
+      about_social_links: [],
     };
   }
 

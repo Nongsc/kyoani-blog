@@ -21,7 +21,9 @@ export function MusicPlayer({ config }: MusicPlayerProps) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (!config?.playlistId || !containerRef.current) return;
+    // 检查playlistId是否存在且非空（去除空白字符）
+    const trimmedPlaylistId = config?.playlistId?.trim();
+    if (!trimmedPlaylistId || !containerRef.current) return;
 
     // 动态加载 APlayer CSS
     const link = document.createElement('link');
@@ -46,7 +48,7 @@ export function MusicPlayer({ config }: MusicPlayerProps) {
           container: containerRef.current,
           server: config.platform,
           type: 'playlist',
-          id: config.playlistId,
+          id: trimmedPlaylistId,
           fixed: false,
           mini: true,
           autoplay: config.autoPlay,
@@ -69,7 +71,7 @@ export function MusicPlayer({ config }: MusicPlayerProps) {
     };
   }, [config]);
 
-  if (!config?.playlistId) {
+  if (!config?.playlistId?.trim()) {
     return (
       <div className={styles.playerPlaceholder}>
         请在后台配置音乐歌单

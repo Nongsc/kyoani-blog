@@ -9,7 +9,16 @@ interface IslandCollapsedProps {
 
 export function IslandCollapsed({ onExpand }: IslandCollapsedProps) {
   return (
-    <div className={styles.collapsedContent}>
+    <div 
+      className={styles.collapsedContent}
+      onClick={onExpand}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onExpand();
+        }
+      }}
+    >
       <NavigationItems />
     </div>
   );

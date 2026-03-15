@@ -23,17 +23,10 @@ export function DynamicIsland() {
     <header className={styles.islandContainer} role="banner">
       <div 
         className={`${styles.island} ${isExpanded ? styles.expanded : styles.collapsed}`}
-        onClick={!isExpanded ? toggleExpand : undefined}
         role="button"
         tabIndex={0}
         aria-expanded={isExpanded}
         aria-label={isExpanded ? "收起灵动岛" : "展开灵动岛"}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            toggleExpand();
-          }
-        }}
       >
         {isExpanded ? (
           <IslandExpanded 

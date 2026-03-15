@@ -1,12 +1,16 @@
 "use client";
 
+import { NavigationItems } from './NavigationItems';
+import { MusicPlayer } from './MusicPlayer';
+import type { MusicConfig } from '@/types/music';
 import styles from './island.module.css';
 
 interface IslandExpandedProps {
   onCollapse: () => void;
+  musicConfig?: MusicConfig | null;
 }
 
-export function IslandExpanded({ onCollapse }: IslandExpandedProps) {
+export function IslandExpanded({ onCollapse, musicConfig }: IslandExpandedProps) {
   return (
     <div className={styles.expandedContent}>
       <button 
@@ -16,7 +20,12 @@ export function IslandExpanded({ onCollapse }: IslandExpandedProps) {
       >
         ✕
       </button>
-      <span className={styles.placeholder}>音乐播放器区域</span>
+      
+      <MusicPlayer config={musicConfig} />
+      
+      <div className={styles.expandedNav}>
+        <NavigationItems />
+      </div>
     </div>
   );
 }

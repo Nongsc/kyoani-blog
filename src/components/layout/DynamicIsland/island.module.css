@@ -182,3 +182,76 @@
 .navLabel {
   font-size: 13px;
 }
+
+.playerContainer {
+  width: 100%;
+  padding: 40px 16px 16px;
+}
+
+.player {
+  width: 100%;
+}
+
+.playerPlaceholder {
+  color: #A7D8F0;
+  font-size: 14px;
+  text-align: center;
+  padding: 20px;
+}
+
+.loading {
+  color: #A7D8F0;
+  font-size: 13px;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+/* APlayer 样式覆盖 */
+.player :global(.aplayer) {
+  background: transparent;
+  box-shadow: none;
+}
+
+.player :global(.aplayer .aplayer-body) {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+}
+
+.player :global(.aplayer .aplayer-info) {
+  padding: 8px 12px;
+}
+
+.player :global(.aplayer .aplayer-music) {
+  margin: 0;
+}
+
+.player :global(.aplayer .aplayer-title) {
+  color: #E8F4F8;
+  font-size: 14px;
+}
+
+.player :global(.aplayer .aplayer-author) {
+  color: #A7D8F0;
+  font-size: 12px;
+}
+
+.expandedNav {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.expandedNav .navItem {
+  padding: 4px 10px;
+  font-size: 12px;
+}
+
+.expandedNav .navIcon {
+  width: 14px;
+  height: 14px;
+}
+
+.expandedNav .navLabel {
+  font-size: 12px;
+}

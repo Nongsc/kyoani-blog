@@ -7,7 +7,7 @@ import styles from './island.module.css';
 
 interface IslandExpandedProps {
   onCollapse: () => void;
-  musicConfig?: MusicConfig | null;
+  musicConfig?: MusicConfig | null | undefined;
 }
 
 export function IslandExpanded({ onCollapse, musicConfig }: IslandExpandedProps) {
@@ -21,7 +21,7 @@ export function IslandExpanded({ onCollapse, musicConfig }: IslandExpandedProps)
         ✕
       </button>
       
-      <MusicPlayer config={musicConfig} />
+      <MusicPlayer config={musicConfig ?? null} />
       
       <div className={styles.expandedNav}>
         <NavigationItems />

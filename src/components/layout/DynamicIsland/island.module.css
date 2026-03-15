@@ -145,3 +145,40 @@
 .closeButton:hover {
   background: rgba(255, 255, 255, 0.2);
 }
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 16px;
+  color: #E8F4F8;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.navItem:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.navItem.active {
+  background: rgba(137, 207, 240, 0.3);
+  color: #89CFF0;
+}
+
+.navIcon {
+  width: 16px;
+  height: 16px;
+}
+
+.navLabel {
+  font-size: 13px;
+}

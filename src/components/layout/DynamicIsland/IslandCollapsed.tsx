@@ -1,5 +1,6 @@
 "use client";
 
+import { NavigationItems } from './NavigationItems';
 import styles from './island.module.css';
 
 interface IslandCollapsedProps {
@@ -9,7 +10,7 @@ interface IslandCollapsedProps {
 export function IslandCollapsed({ onExpand }: IslandCollapsedProps) {
   return (
     <div className={styles.collapsedContent}>
-      <span className={styles.placeholder}>灵动岛</span>
+      <NavigationItems />
     </div>
   );
 }

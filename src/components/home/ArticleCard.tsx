@@ -1,3 +1,4 @@
+import { memo } from "react";
 import Link from "next/link";
 import { Article } from "@/types/article";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,7 +9,7 @@ interface ArticleCardProps {
   article: Article;
 }
 
-export function ArticleCard({ article }: ArticleCardProps) {
+export const ArticleCard = memo(function ArticleCard({ article }: ArticleCardProps) {
   return (
     <Link href={`/article/${article.slug}`}>
       <Card className="h-full hover:border-primary hover:shadow-lg hover:shadow-primary/10 transition-all duration-300 group cursor-pointer bg-card">
@@ -47,4 +48,4 @@ export function ArticleCard({ article }: ArticleCardProps) {
       </Card>
     </Link>
   );
-}
+});

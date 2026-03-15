@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { Article, ArticleRow, Heading, Category, Tag, SiteSettings } from "@/types/article";
 import { createSupabaseClient } from "./supabase/client";
 
@@ -34,7 +35,8 @@ function generateExcerpt(content: string, length: number = 150): string {
   return text.length > length ? text.slice(0, length) + "..." : text;
 }
 
-export async function getAllArticles(): Promise<Article[]> {
+// Wrap with React cache for automatic request deduplication
+export const getAllArticles = cache(async (): Promise<Article[]> => {
   const supabase = createSupabaseClient();
   
   const { data, error } = await supabase
@@ -65,9 +67,9 @@ export async function getAllArticles(): Promise<Article[]> {
   }
 
   return (data as ArticleRow[]).map(transformArticle);
-}
+});
 
-export async function getArticleBySlug(slug: string): Promise<Article | null> {
+export const getArticleBySlug = cache(async (slug: string): Promise<Article | null> => {
   const supabase = createSupabaseClient();
   
   // Decode slug in case it's URL encoded
@@ -102,7 +104,7 @@ export async function getArticleBySlug(slug: string): Promise<Article | null> {
   }
 
   return transformArticle(data as ArticleRow);
-}
+});
 
 export async function getArticlesByTag(tag: string): Promise<Article[]> {
   const supabase = createSupabaseClient();
@@ -314,7 +316,7 @@ export async function getRelatedArticles(currentSlug: string, limit: number = 3)
     .map(s => s.article);
 }
 
-export async function getSiteSettings(): Promise<SiteSettings> {
+export const getSiteSettings = cache(async (): Promise<SiteSettings> => {
   const supabase = createSupabaseClient();
   
   const { data, error } = await supabase
@@ -398,4 +400,4 @@ export async function getSiteSettings(): Promise<SiteSettings> {
     about_skills: aboutSkills,
     about_social_links: aboutSocialLinks,
   };
-}
+});

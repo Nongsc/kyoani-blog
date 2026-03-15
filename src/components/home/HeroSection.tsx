@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
 import { AuroraText } from "@/components/ui/aurora-text";
@@ -28,14 +28,23 @@ export function HeroSection({
   const [isScrolled, setIsScrolled] = useState(false);
   const [hitokoto, setHitokoto] = useState<HitokotoResponse | null>(null);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+  // Memoize scroll handler to prevent recreation on each render
+  const handleScroll = useCallback(() => {
+    setIsScrolled(window.scrollY > 50);
   }, []);
+
+  // Memoize scroll function
+  const scrollToContent = useCallback(() => {
+    const contentSection = document.getElementById("content-section");
+    if (contentSection) {
+      contentSection.scrollIntoView({ behavior: "smooth" });
+    }
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [handleScroll]);
 
   useEffect(() => {
     if (hitokotoEnabled) {
@@ -45,13 +54,6 @@ export function HeroSection({
         .catch(() => console.error("Failed to fetch hitokoto"));
     }
   }, [hitokotoEnabled, hitokotoType]);
-
-  const scrollToContent = () => {
-    const contentSection = document.getElementById("content-section");
-    if (contentSection) {
-      contentSection.scrollIntoView({ behavior: "smooth" });
-    }
-  };
 
   const displayDescription = hitokotoEnabled && hitokoto
     ? hitokoto.hitokoto

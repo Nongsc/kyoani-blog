@@ -62,7 +62,7 @@ export const MusicPlayer = forwardRef<MusicPlayerRef, MusicPlayerProps>(
 
     const initPlayer = useCallback(async () => {
       const trimmedPlaylistId = config?.playlistId?.trim();
-      if (!trimmedPlaylistId || !containerRef.current) return;
+      if (!config || !trimmedPlaylistId || !containerRef.current) return;
 
       try {
         // 动态加载 APlayer CSS（非阻塞）

@@ -3,12 +3,14 @@
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeHighlight from "rehype-highlight";
+import rehypeSanitize from "rehype-sanitize";
 import { Heading } from "@/types/article";
 import { useEffect, useState, useMemo } from "react";
 
 // Extract plugins outside component to avoid re-creation on each render
 const remarkPlugins = [remarkGfm];
-const rehypePlugins = [rehypeHighlight];
+// rehype-sanitize prevents XSS attacks by sanitizing HTML
+const rehypePlugins = [rehypeHighlight, rehypeSanitize];
 
 interface MarkdownRendererProps {
   content: string;

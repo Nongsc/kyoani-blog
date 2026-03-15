@@ -21,14 +21,16 @@ export function TOC({ headings, activeId }: TOCProps) {
   };
   
   return (
-    <nav className="sticky top-20">
+    <nav className="sticky top-20" aria-label="文章目录">
       <h3 className="text-sm font-medium text-foreground mb-3">目录</h3>
       <ScrollArea className="h-[calc(100vh-12rem)]">
-        <ul className="space-y-1 pr-4">
+        <ul className="space-y-1 pr-4" role="list">
           {headings.map((heading) => (
             <li key={heading.id}>
               <button
                 onClick={() => handleClick(heading.id)}
+                aria-label={`跳转到：${heading.text}`}
+                aria-current={activeId === heading.id ? "true" : undefined}
                 className={`text-sm text-left w-full py-1 px-2 rounded transition-colors hover:bg-muted ${
                   heading.level === 1 ? "pl-2" :
                   heading.level === 2 ? "pl-4" :

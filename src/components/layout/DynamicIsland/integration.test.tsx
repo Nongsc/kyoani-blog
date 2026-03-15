@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import { DynamicIsland } from './DynamicIsland';
 import * as musicApi from '@/lib/music';
 import type { MusicConfig } from '@/types/music';
@@ -11,6 +11,17 @@ import type { MusicConfig } from '@/types/music';
 vi.mock('@/lib/music', () => ({
   getMusicConfig: vi.fn(),
 }));
+
+// Mock APlayer
+const mockAPlayer = vi.fn();
+mockAPlayer.mockImplementation(() => ({
+  on: vi.fn(),
+  destroy: vi.fn(),
+  toggle: vi.fn(),
+  audio: { paused: true },
+}));
+
+vi.stubGlobal('APlayer', mockAPlayer);
 
 describe('DynamicIsland Integration Tests', () => {
   const mockConfig: MusicConfig = {
@@ -26,6 +37,13 @@ describe('DynamicIsland Integration Tests', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     vi.mocked(musicApi.getMusicConfig).mockResolvedValue(mockConfig);
+    mockAPlayer.mockClear();
+    mockAPlayer.mockImplementation(() => ({
+      on: vi.fn(),
+      destroy: vi.fn(),
+      toggle: vi.fn(),
+      audio: { paused: true },
+    }));
   });
 
   afterEach(() => {
@@ -46,7 +64,7 @@ describe('DynamicIsland Integration Tests', () => {
       const { container } = render(<DynamicIsland />);
 
       await waitFor(() => {
-        const island = container.querySelector('[class*="island"]');
+        const island = container.querySelector('[class*="_island_"]');
         expect(island).toHaveAttribute('aria-expanded', 'false');
       });
     });
@@ -57,23 +75,18 @@ describe('DynamicIsland Integration Tests', () => {
         playlistId: '',
       });
 
-      const { container } = render(<DynamicIsland />);
+      render(<DynamicIsland />);
 
       // 等待初始渲染
       await waitFor(() => {
         expect(screen.getByText('Home')).toBeInTheDocument();
       });
 
-      // 点击collapsed content展开
-      const collapsedContent = container.querySelector('[class*="collapsedContent"]');
-      if (collapsedContent) {
-        fireEvent.click(collapsedContent);
-      }
-
-      // 等待展开后显示占位符
+      // 现在折叠状态下应该显示封面占位符
       await waitFor(() => {
-        expect(screen.getByText('请在后台配置音乐歌单')).toBeInTheDocument();
-      }, { timeout: 5000 });
+        const coverToggle = screen.getByRole('button', { name: /展开音乐播放器|音乐播放器/i });
+        expect(coverToggle).toBeInTheDocument();
+      });
     });
   });
 

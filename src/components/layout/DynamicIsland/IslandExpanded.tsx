@@ -1,16 +1,13 @@
 "use client";
 
-import { NavigationItems } from './NavigationItems';
-import { MusicPlayer } from './MusicPlayer';
-import type { MusicConfig } from '@/types/music';
 import styles from './island.module.css';
 
 interface IslandExpandedProps {
   onCollapse: () => void;
-  musicConfig?: MusicConfig | null | undefined;
+  children: React.ReactNode;
 }
 
-export function IslandExpanded({ onCollapse, musicConfig }: IslandExpandedProps) {
+export function IslandExpanded({ onCollapse, children }: IslandExpandedProps) {
   return (
     <div className={styles.expandedContent}>
       <button 
@@ -21,11 +18,7 @@ export function IslandExpanded({ onCollapse, musicConfig }: IslandExpandedProps)
         ✕
       </button>
       
-      <MusicPlayer config={musicConfig ?? null} />
-      
-      <div className={styles.expandedNav}>
-        <NavigationItems />
-      </div>
+      {children}
     </div>
   );
 }

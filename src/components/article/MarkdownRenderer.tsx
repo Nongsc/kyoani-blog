@@ -20,14 +20,9 @@ interface MarkdownRendererProps {
 export function MarkdownRenderer({ content, headings }: MarkdownRendererProps) {
   const [activeId, setActiveId] = useState<string>("");
   
-  // Create a map of heading text to unique ID for consistent ID assignment
-  const headingIdMap = useMemo(() => {
-    const map = new Map<string, string>();
-    headings.forEach((h) => {
-      map.set(h.text, h.id);
-    });
-    return map;
-  }, [headings]);
+  // Create a mutable copy of headings for ID assignment
+  // This allows us to track which headings have been used
+  const headingsRef = useMemo(() => [...headings], [headings]);
   
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -52,10 +47,19 @@ export function MarkdownRenderer({ content, headings }: MarkdownRendererProps) {
   }, [headings]);
   
   const getHeadingId = (text: string): string => {
-    return headingIdMap.get(text) || text
+    // Find the first matching heading that hasn't been used yet
+    const index = headingsRef.findIndex(h => h.text === text);
+    if (index !== -1) {
+      const id = headingsRef[index].id;
+      // Mark as used by removing it
+      headingsRef.splice(index, 1);
+      return id;
+    }
+    // Fallback: generate ID from text
+    return text
       .toLowerCase()
       .replace(/[^a-z0-9\u4e00-\u9fa5]+/g, "-")
-      .replace(/^-|-$/g, "");
+      .replace(/^-|-$/g, "") || `heading-${Date.now()}`;
   };
   
   return (
@@ -81,9 +85,20 @@ export function MarkdownRenderer({ content, headings }: MarkdownRendererProps) {
             return <h4 id={id} {...props}>{children}</h4>;
           },
           a: ({ href, children }) => {
-            if (href?.startsWith("/")) {
+            if (!href) {
+              return <a>{children}</a>;
+            }
+            
+            // 内部链接：以 / 开头或 # 开头（锚点）
+            const isInternal = href.startsWith('/') || href.startsWith('#');
+            // 特殊链接：mailto: 和 tel:
+            const isSpecial = href.startsWith('mailto:') || href.startsWith('tel:');
+            
+            if (isInternal || isSpecial) {
               return <a href={href}>{children}</a>;
             }
+            
+            // 外部链接需要安全属性
             return <a href={href} target="_blank" rel="noopener noreferrer">{children}</a>;
           },
           img: ({ src, alt }) => (

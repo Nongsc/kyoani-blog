@@ -9,6 +9,14 @@
   pointer-events: none;
 }
 
+.hidden {
+  visibility: hidden !important;
+  width: 0 !important;
+  height: 0 !important;
+  overflow: hidden !important;
+  flex: 0 0 auto !important;
+}
+
 .island {
   pointer-events: auto;
   background: rgba(26, 58, 74, 0.55);
@@ -24,6 +32,15 @@
   transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
   position: relative;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+/* island 的直接子元素（非 hidden）撑满宽度 */
+.island > div:not(.hidden) {
+  flex: 1;
+  display: flex;
+  align-items: center;
 }
 
 .collapsed {
@@ -34,7 +51,8 @@
 
 .expanded {
   width: 360px;
-  height: 180px;
+  height: auto;
+  min-height: 120px;
   border-radius: 24px;
   cursor: default;
 }
@@ -48,14 +66,14 @@
 /* 移动端尺寸调整 */
 @media (max-width: 640px) {
   .collapsed {
-    width: 200px;
+    width: 300px;
     height: 40px;
   }
   
   .expanded {
     width: calc(100vw - 32px);
     max-width: 300px;
-    height: 160px;
+    min-height: 100px;
   }
   
   .navLabel {
@@ -64,6 +82,19 @@
   
   .navItem {
     padding: 6px;
+  }
+  
+  .collapsedNav .navItem {
+    padding: 4px 6px;
+  }
+  
+  .coverToggle {
+    width: 28px;
+    height: 28px;
+  }
+
+  .songControls {
+    display: none;
   }
 }
 
@@ -128,6 +159,14 @@
   .island {
     transition: none;
   }
+  
+  .playIndicator span {
+    animation: none;
+  }
+  
+  .coverToggle {
+    transition: none;
+  }
 }
 
 .collapsedContent,
@@ -136,8 +175,17 @@
   height: 100%;
   display: flex;
   align-items: center;
-  justify-content: center;
   position: relative;
+}
+
+.collapsedContent {
+  flex: 1;
+  justify-content: center;
+  padding: 0 8px;
+}
+
+.expandedContent {
+  justify-content: center;
 }
 
 .placeholder {
@@ -206,7 +254,7 @@
 
 .playerContainer {
   width: 100%;
-  padding: 40px 16px 16px;
+  padding: 32px 8px 8px;
 }
 
 .player {
@@ -227,33 +275,115 @@
   margin-bottom: 8px;
 }
 
-/* APlayer 样式覆盖 */
+/* APlayer 样式覆盖 - 灵动岛适配 */
 .player :global(.aplayer) {
   background: transparent;
   box-shadow: none;
+  font-family: inherit;
 }
 
 .player :global(.aplayer .aplayer-body) {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
 }
 
+/* 封面图 */
+.player :global(.aplayer .aplayer-pic) {
+  width: 48px !important;
+  height: 48px !important;
+  min-width: 48px;
+  border-radius: 8px;
+  margin: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* 信息区域 */
 .player :global(.aplayer .aplayer-info) {
-  padding: 8px 12px;
+  padding: 8px;
+  height: auto;
+  border-bottom: 1px solid rgba(137, 207, 240, 0.15);
 }
 
 .player :global(.aplayer .aplayer-music) {
   margin: 0;
+  flex-grow: 1;
 }
 
 .player :global(.aplayer .aplayer-title) {
   color: #E8F4F8;
-  font-size: 14px;
+  font-size: 13px;
+  font-weight: 500;
 }
 
 .player :global(.aplayer .aplayer-author) {
   color: #A7D8F0;
-  font-size: 12px;
+  font-size: 11px;
+  opacity: 0.8;
+}
+
+/* 控制按钮区域 */
+.player :global(.aplayer .aplayer-controller) {
+  padding: 4px 8px;
+}
+
+.player :global(.aplayer .aplayer-bar-wrap) {
+  margin: 4px 0;
+}
+
+.player :global(.aplayer .aplayer-bar) {
+  height: 3px;
+  background: rgba(137, 207, 240, 0.2);
+  border-radius: 2px;
+}
+
+.player :global(.aplayer .aplayer-loaded) {
+  background: rgba(137, 207, 240, 0.3);
+}
+
+.player :global(.aplayer .aplayer-played) {
+  background: linear-gradient(90deg, #7CB9E8, #89CFF0);
+  border-radius: 2px;
+}
+
+.player :global(.aplayer .aplayer-thumb) {
+  width: 10px;
+  height: 10px;
+  background: #E8F4F8;
+  border: none;
+  box-shadow: 0 0 6px rgba(137, 207, 240, 0.6);
+}
+
+/* 时间显示 */
+.player :global(.aplayer .aplayer-time) {
+  color: #A7D8F0;
+  font-size: 10px;
+}
+
+/* 控制按钮 */
+.player :global(.aplayer .aplayer-icon) {
+  width: 24px;
+  height: 24px;
+}
+
+.player :global(.aplayer .aplayer-icon path) {
+  fill: #E8F4F8;
+}
+
+.player :global(.aplayer .aplayer-icon:hover path) {
+  fill: #89CFF0;
+}
+
+.player :global(.aplayer .aplayer-icon-play),
+.player :global(.aplayer .aplayer-icon-pause) {
+  background: rgba(137, 207, 240, 0.25);
+  border-radius: 50%;
+  padding: 4px;
+}
+
+.player :global(.aplayer .aplayer-icon-play:hover),
+.player :global(.aplayer .aplayer-icon-pause:hover) {
+  background: rgba(137, 207, 240, 0.4);
 }
 
 .expandedNav {
@@ -275,4 +405,271 @@
 
 .expandedNav .navLabel {
   font-size: 12px;
+}
+
+/* 折叠状态导航 */
+.collapsedNav {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+}
+
+.collapsedNav .nav {
+  gap: 2px;
+}
+
+.collapsedNav .navItem {
+  padding: 4px 8px;
+  font-size: 12px;
+}
+
+.collapsedNav .navIcon {
+  width: 14px;
+  height: 14px;
+}
+
+/* 封面图开关 */
+.coverToggle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+  position: absolute;
+  right: 8px;
+}
+
+.coverToggle:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 12px rgba(137, 207, 240, 0.5);
+}
+
+.coverToggle.playing {
+  box-shadow: 0 0 8px rgba(137, 207, 240, 0.4);
+}
+
+.coverImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.coverPlaceholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #89CFF0;
+  font-size: 16px;
+}
+
+/* 播放指示器 */
+.playIndicator {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  display: flex;
+  align-items: flex-end;
+  gap: 1px;
+  height: 8px;
+  padding: 2px;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
+}
+
+.playIndicator span {
+  width: 2px;
+  background: #89CFF0;
+  border-radius: 1px;
+  animation: soundBar 0.5s ease-in-out infinite alternate;
+}
+
+.playIndicator span:nth-child(1) {
+  height: 3px;
+  animation-delay: 0s;
+}
+
+.playIndicator span:nth-child(2) {
+  height: 5px;
+  animation-delay: 0.1s;
+}
+
+.playIndicator span:nth-child(3) {
+  height: 4px;
+  animation-delay: 0.2s;
+}
+
+@keyframes soundBar {
+  0% {
+    height: 2px;
+  }
+  100% {
+    height: 6px;
+  }
+}
+
+/* 歌曲控制区域 */
+.songControls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  justify-content: center;
+  min-width: 0;
+  padding: 0 8px;
+}
+
+.songInfo {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  max-width: 120px;
+}
+
+.songTitle {
+  color: #E8F4F8;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.songArtist {
+  color: #A7D8F0;
+  font-size: 11px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.controlButtons {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.controlBtn {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: #E8F4F8;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, transform 0.1s;
+  padding: 0;
+}
+
+.controlBtn:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.controlBtn:active {
+  transform: scale(0.9);
+}
+
+.controlBtn.playBtn {
+  background: rgba(137, 207, 240, 0.3);
+}
+
+.controlBtn.playBtn:hover {
+  background: rgba(137, 207, 240, 0.5);
+}
+
+/* APlayer 歌词样式 - 紧凑版 */
+.player :global(.aplayer-lrc) {
+  height: 50px;
+  margin: 0;
+  padding: 4px 0;
+}
+
+.player :global(.aplayer-lrc::before),
+.player :global(.aplayer-lrc::after) {
+  background: transparent;
+}
+
+.player :global(.aplayer-lrc-contents) {
+  color: #A7D8F0;
+}
+
+.player :global(.aplayer-lrc-contents p) {
+  font-size: 11px;
+  line-height: 16px;
+  height: 16px;
+  color: rgba(168, 216, 240, 0.4);
+  text-shadow: none;
+  margin: 0;
+  padding: 0;
+}
+
+.player :global(.aplayer-lrc-contents p.aplayer-lrc-current) {
+  color: #E8F4F8;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* APlayer 播放列表 - 紧凑版 */
+.player :global(.aplayer .aplayer-list) {
+  max-height: 60px;
+  border-top: 1px solid rgba(137, 207, 240, 0.15);
+  overflow-y: auto;
+}
+
+.player :global(.aplayer .aplayer-list::-webkit-scrollbar) {
+  width: 4px;
+}
+
+.player :global(.aplayer .aplayer-list::-webkit-scrollbar-thumb) {
+  background: rgba(137, 207, 240, 0.3);
+  border-radius: 2px;
+}
+
+.player :global(.aplayer .aplayer-list ol) {
+  padding: 0;
+  margin: 0;
+}
+
+.player :global(.aplayer .aplayer-list ol li) {
+  border-bottom: 1px solid rgba(137, 207, 240, 0.08);
+  color: #A7D8F0;
+  font-size: 10px;
+  padding: 4px 8px;
+  line-height: 1.2;
+}
+
+.player :global(.aplayer .aplayer-list ol li .aplayer-list-index) {
+  color: rgba(137, 207, 240, 0.5);
+  font-size: 9px;
+}
+
+.player :global(.aplayer .aplayer-list ol li .aplayer-list-title) {
+  font-size: 10px;
+}
+
+.player :global(.aplayer .aplayer-list ol li .aplayer-list-author) {
+  color: rgba(168, 216, 240, 0.6);
+  font-size: 9px;
+}
+
+.player :global(.aplayer .aplayer-list ol li.aplayer-list-light) {
+  background: rgba(137, 207, 240, 0.15);
+  color: #E8F4F8;
+}
+
+.player :global(.aplayer .aplayer-list ol li:hover) {
+  background: rgba(137, 207, 240, 0.1);
 }

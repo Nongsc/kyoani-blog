@@ -267,6 +267,11 @@ export async function getAllCategories(): Promise<Category[]> {
 }
 
 export function extractHeadings(content: string): Heading[] {
+  // 防护：检查null/undefined/空字符串
+  if (!content || typeof content !== 'string') {
+    return [];
+  }
+  
   const headings: Heading[] = [];
   const idCount: Record<string, number> = {};
   const matches = content.matchAll(/^(#{1,6})\s+(.+)$/gm);
@@ -274,12 +279,21 @@ export function extractHeadings(content: string): Heading[] {
   for (const match of matches) {
     const level = match[1].length;
     const text = match[2].trim();
+    
+    // 跳过空文本或只包含#的文本
+    if (!text || /^#+$/.test(text)) {
+      continue;
+    }
+    
     const baseId = text
       .toLowerCase()
       .replace(/[^a-z0-9\u4e00-\u9fa5]+/g, "-")
       .replace(/^-|-$/g, "");
     
-    let id = baseId;
+    // 确保ID不为空
+    let id = baseId || `heading-${headings.length}`;
+    
+    // 处理重复ID
     if (idCount[baseId] !== undefined) {
       idCount[baseId]++;
       id = `${baseId}-${idCount[baseId]}`;

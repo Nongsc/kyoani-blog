@@ -36,13 +36,31 @@
   cursor: default;
 }
 
+/* 移动端触摸优化 */
+.island {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* 移动端尺寸调整 */
 @media (max-width: 640px) {
   .collapsed {
     width: 200px;
+    height: 40px;
   }
   
   .expanded {
-    width: 300px;
+    width: calc(100vw - 32px);
+    max-width: 300px;
+    height: 160px;
+  }
+  
+  .navLabel {
+    display: none;
+  }
+  
+  .navItem {
+    padding: 6px;
   }
 }
 

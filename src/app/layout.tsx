@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Noto_Sans_SC } from "next/font/google";
 import "./globals.css";
-import { Header } from "@/components/layout/Header";
+import { DynamicIsland } from "@/components/layout/DynamicIsland";
 import { Footer } from "@/components/layout/Footer";
 import { getSiteSettings } from "@/lib/articles";
 
@@ -26,8 +26,8 @@ export default async function RootLayout({
   return (
     <html lang="en" className={notoSansSC.variable}>
       <body className="min-h-screen flex flex-col">
-        <Header siteTitle={siteSettings.site_title} />
-        <main className="flex-1 pt-16">
+        <DynamicIsland />
+        <main className="flex-1 pt-20">
           {children}
         </main>
         <Footer

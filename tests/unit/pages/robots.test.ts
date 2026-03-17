@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import robots from './robots';
+import robots from '@/app/robots';
 
 /**
  * 测试目标: 验证 robots.ts 生成的爬虫规则

@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { NavigationItems } from './NavigationItems';
+import { NavigationItems } from '@/components/layout/DynamicIsland/NavigationItems';
 
 // Mock Next.js hooks
 vi.mock('next/navigation', () => ({

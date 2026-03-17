@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
-import { DynamicIsland } from './DynamicIsland';
+import { DynamicIsland } from '@/components/layout/DynamicIsland/DynamicIsland';
 import * as musicApi from '@/lib/music';
 import type { MusicConfig } from '@/types/music';
 

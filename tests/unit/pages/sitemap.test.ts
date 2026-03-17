@@ -29,7 +29,7 @@ vi.mock('@/lib/articles', () => ({
 }));
 
 // Import after mocking
-import sitemap from './sitemap';
+import sitemap from '@/app/sitemap';
 
 describe('sitemap.ts', () => {
   beforeEach(() => {

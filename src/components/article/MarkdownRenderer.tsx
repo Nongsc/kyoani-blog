@@ -84,6 +84,14 @@ export function MarkdownRenderer({ content, headings }: MarkdownRendererProps) {
             const id = getHeadingId(String(children));
             return <h4 id={id} {...props}>{children}</h4>;
           },
+          h5: ({ children, ...props }) => {
+            const id = getHeadingId(String(children));
+            return <h5 id={id} {...props}>{children}</h5>;
+          },
+          h6: ({ children, ...props }) => {
+            const id = getHeadingId(String(children));
+            return <h6 id={id} {...props}>{children}</h6>;
+          },
           a: ({ href, children }) => {
             if (!href) {
               return <a>{children}</a>;

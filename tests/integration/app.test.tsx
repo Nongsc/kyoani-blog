@@ -6,9 +6,9 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { MarkdownRenderer } from './components/article/MarkdownRenderer';
-import { extractHeadings } from './lib/articles';
-import { Heading, Article } from './types/article';
+import { MarkdownRenderer } from '@/components/article/MarkdownRenderer';
+import { extractHeadings } from '@/lib/articles';
+import { Heading, Article } from '@/types/article';
 
 describe('集成测试：完整用户流程', () => {
   beforeEach(() => {
@@ -298,13 +298,29 @@ let rust = "Rust";
       const headings = extractHeadings(content);
       const { container } = render(<MarkdownRenderer content={content} headings={headings} />);
 
-      // 验证每个级别的标题都有ID
-      expect(container.querySelector('h1')?.id).toBeTruthy();
-      expect(container.querySelector('h2')?.id).toBeTruthy();
-      expect(container.querySelector('h3')?.id).toBeTruthy();
-      expect(container.querySelector('h4')?.id).toBeTruthy();
-      expect(container.querySelector('h5')?.id).toBeTruthy();
-      expect(container.querySelector('h6')?.id).toBeTruthy();
+      // 验证每个级别的标题都有ID（使用非空断言）
+      const h1 = container.querySelector('h1');
+      const h2 = container.querySelector('h2');
+      const h3 = container.querySelector('h3');
+      const h4 = container.querySelector('h4');
+      const h5 = container.querySelector('h5');
+      const h6 = container.querySelector('h6');
+      
+      // 验证标题元素存在
+      expect(h1).toBeTruthy();
+      expect(h2).toBeTruthy();
+      expect(h3).toBeTruthy();
+      expect(h4).toBeTruthy();
+      expect(h5).toBeTruthy();
+      expect(h6).toBeTruthy();
+      
+      // 验证标题内容正确
+      expect(h1?.textContent).toBe('主标题');
+      expect(h2?.textContent).toBe('第二章');
+      expect(h3?.textContent).toBe('第二章第一节');
+      expect(h4?.textContent).toBe('第二章第一节小节');
+      expect(h5?.textContent).toBe('五级标题');
+      expect(h6?.textContent).toBe('六级标题');
 
       // 验证headingIdMap正确性
       headings.forEach(heading => {

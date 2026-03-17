@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import NotFound from './not-found';
+import NotFound from '@/app/not-found';
 
 /**
  * 测试目标: 验证 not-found.tsx 页面
